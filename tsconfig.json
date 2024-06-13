@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ES2022"
+		],
+    "resolveJsonModule": true,
+    "target": "ES2022",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "declaration": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force", 
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
+    "noImplicitThis": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "noUnusedLocals": true,
+    "noImplicitOverride": false,
+    "noUnusedParameters": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/admin/*"
+      ]
+    }
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

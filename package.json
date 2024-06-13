@@ -1,0 +1,31 @@
+{
+  "name": "ayazmo-plugin-comments",
+  "version": "0.1.4",
+  "description": "ayazmo plugin comments",
+  "exports": "./dist/index.js",
+  "author": "ayazmo.io",
+  "license": "MIT",
+  "rootDir": "src",
+  "type": "module",
+  "keywords": [
+    "ayazmo-plugin-comments"
+  ],
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@ayazmo/core": "^0.1.23",
+    "@ayazmo/types": "^0.1.23",
+    "@ayazmo/utils": "^0.1.23",
+    "fastify": "^4.26.2"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc --build",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "ayazmo": "^0.1.23",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.4.2"
+  }
+}
