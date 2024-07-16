@@ -35,7 +35,6 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
       const commentService = request.diScope.resolve('commentService');
       const comment = await commentService.addComment(payload);
       reply.code(200).send(comment);
-
     }
   },
   {
