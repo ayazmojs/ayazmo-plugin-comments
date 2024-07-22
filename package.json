@@ -1,6 +1,6 @@
 {
   "name": "ayazmo-plugin-comments",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "ayazmo plugin comments",
   "exports": "./dist/index.js",
   "author": "ayazmo.io",
@@ -17,11 +17,15 @@
     "@ayazmo/core": "^0.1.23",
     "@ayazmo/types": "^0.1.23",
     "@ayazmo/utils": "^0.1.23",
+    "@changesets/cli": "^2.27.7",
     "fastify": "^4.26.2"
   },
   "scripts": {
     "build": "rimraf dist && tsc --build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "version": "changeset version",
+    "publish": "changeset publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "ayazmo": "^0.1.23",
