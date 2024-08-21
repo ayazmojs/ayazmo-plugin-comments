@@ -113,7 +113,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
         required: ['entityContextId']
       }
     },
-    preHandler: [app.anonymousStrategy],
+    // @ts-ignore
+    preHandler: app.userAuthChain,
     handler: async (request, reply) => {
       const commentService = request.diScope.resolve('commentService');
       const comments = await commentService.findAllCommentsByEntityContextId(request.query);
