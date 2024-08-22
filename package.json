@@ -14,9 +14,9 @@
     "dist"
   ],
   "dependencies": {
-    "@ayazmo/core": "^0.1.29",
-    "@ayazmo/types": "^0.1.29",
-    "@ayazmo/utils": "^0.1.29",
+    "@ayazmo/core": "^0.1.30",
+    "@ayazmo/types": "^0.1.30",
+    "@ayazmo/utils": "^0.1.30",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.7",
     "fastify": "^4.26.2"
