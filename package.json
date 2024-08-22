@@ -1,6 +1,6 @@
 {
   "name": "ayazmo-plugin-comments",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "ayazmo plugin comments",
   "exports": "./dist/index.js",
   "author": "ayazmo.io",
