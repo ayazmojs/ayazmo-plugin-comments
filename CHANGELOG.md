@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.1.11
+
+### Patch Changes
+
+- deps
+
 ## 0.1.10
 
 ### Patch Changes
