@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.1.13
+
+### Patch Changes
+
+- add versioning and turn content into text
+
 ## 0.1.12
 
 ### Patch Changes
