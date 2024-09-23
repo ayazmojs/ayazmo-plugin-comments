@@ -6,7 +6,7 @@
 import { BasePluginService } from '@ayazmo/core';
 import Comment from '../entities/Comment.js';
 import CommentReport from '../entities/CommentReport.js';
-import { EntityRepository, IEventEmitter } from '@ayazmo/types';
+import { EntityRepository, IEventEmitter, PluginSettings, AyazmoInstance } from '@ayazmo/types';
 import { AyazmoError } from '@ayazmo/utils'
 
 export default class CommentService extends BasePluginService {
@@ -21,11 +21,11 @@ export default class CommentService extends BasePluginService {
     COMMENT_REPORT_CREATE: 'comment.report.create',
   }
 
-  constructor(container, pluginOptions) {
-    super(container, pluginOptions);
+  constructor(app: AyazmoInstance, pluginOptions: PluginSettings) {
+    super(app, pluginOptions);
     this.commentRepository = this.getRepository('Comment');
     this.commentReportRepository = this.getRepository('CommentReport');
-    this.eventService = container.eventService;
+    this.eventService = app.diContainer.resolve('eventService');
   }
 
   /**
