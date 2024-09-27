@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.2.2
+
+### Patch Changes
+
+- enhance admin routes
+
 ## 0.2.1
 
 ### Patch Changes

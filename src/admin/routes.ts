@@ -10,10 +10,11 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
         properties: {
           entityContextId: {
             type: 'string',
+            minLength: 1
           },
           status: {
             type: 'string',
-            enum: ['published', 'deleted'],
+            minLength: 1
           },
           first: {
             type: 'number',
@@ -57,14 +58,15 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
         properties: {
           status: {
             type: 'string',
-            enum: ['deleted', 'published'],
+            minLength: 1
           },
           content: {
             type: 'string',
             minLength: 1
           },
         },
-        required: ['content']
+        required: ['content'],
+        additionalProperties: false
       }
     },
     preHandler: app.adminAuthChain,
