@@ -25,7 +25,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
             type: 'string',
           }
         },
-        required: ['content', 'entityContextId']
+        required: ['content', 'entityContextId'],
+        additionalProperties: false
       }
     },
     preHandler: app.userAuthChain,
@@ -49,7 +50,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
             minLength: 1
           },
         },
-        required: ['reason']
+        required: ['reason'],
+        additionalProperties: false
       }
     },
     preHandler: app.userAuthChain,
@@ -73,7 +75,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
             type: 'string',
           },
         },
-        required: ['content']
+        required: ['content'],
+        additionalProperties: false
       }
     },
     preHandler: app.userAuthChain,
@@ -83,7 +86,6 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
       const commentService = request.diScope.resolve('commentService');
       const comment = await commentService.updateOwnComment(commentId, payload, request.user.id);
       reply.code(200).send(comment);
-
     }
   },
   {
@@ -110,7 +112,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
             default: 'desc',
           },
         },
-        required: ['entityContextId']
+        required: ['entityContextId'],
+        additionalProperties: false
       }
     },
     // @ts-ignore
@@ -142,7 +145,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
             default: 'desc',
           },
         },
-        required: []
+        required: [],
+        additionalProperties: false
       }
     },
     preHandler: app.userAuthChain,

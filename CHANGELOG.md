@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.2.1
+
+### Patch Changes
+
+- add config for default and display status
+
 ## 0.2.0
 
 ### Minor Changes

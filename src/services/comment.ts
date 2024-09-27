@@ -21,8 +21,8 @@ export default class CommentService extends BasePluginService {
     COMMENT_REPORT_CREATE: 'comment.report.create',
   }
 
-  constructor(app: AyazmoInstance, pluginOptions: PluginSettings) {
-    super(app, pluginOptions);
+  constructor(app: AyazmoInstance, pluginSettings: PluginSettings) {
+    super(app, pluginSettings);
     this.commentRepository = this.getRepository('Comment');
     this.commentReportRepository = this.getRepository('CommentReport');
     this.eventService = app.diContainer.resolve('eventService');
@@ -34,6 +34,7 @@ export default class CommentService extends BasePluginService {
    */
   async addComment(comment: Comment & { parentCommentId?: string }) {
     const { parentCommentId, ...payload } = comment;
+    payload.status = this.pluginSettings.defaultStatus ?? 'published';
 
     if (parentCommentId) {
       payload.parentComment = this.em.getReference(Comment, parentCommentId)
@@ -112,15 +113,17 @@ export default class CommentService extends BasePluginService {
    * @param first
    * @param cursor
    */
-  async findAllCommentsByEntityContextId({
-    entityContextId,
-    first,
-    cursor = '',
-    sort
+  async findAllCommentsByEntityContextId(args: {
+    entityContextId: string,
+    first: string,
+    cursor: string,
+    sort: string
   }) {
+    const { entityContextId, first, cursor, sort } = args
+
     const result = await this.em.findByCursor(Comment, {
       entityContextId: entityContextId.toString(),
-      status: 'published',
+      status: { $in: this.pluginSettings.displayStatus ?? ['approved', 'pending'] },
       parentComment: null
     }, {
       first: parseInt(first),
