@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.3.0
+
+### Minor Changes
+
+- add section_id
+
 ## 0.2.2
 
 ### Patch Changes
