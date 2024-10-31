@@ -1,4 +1,4 @@
-import { Entity, Property, ManyToOne, OneToMany, Collection, BeforeUpdate } from '@ayazmo/types';
+import { Entity, Property, ManyToOne, OneToMany, Collection } from '@ayazmo/types';
 import { BaseEntity } from '@ayazmo/core';
 import CommentReport from './CommentReport.js';
 
@@ -38,11 +38,9 @@ export default class Comment extends BaseEntity {
   @Property({ default: false })
   isReported: boolean = false;
 
-  @Property({ type: 'number', default: 1 })
-  version: number = 1;
+  @Property({ version: true, default: 1 })
+  version!: number;
 
-  @BeforeUpdate()
-  incrementVersion() {
-    this.version++;
-  }
+  @Property({ nullable: true })
+  sectionId: string;
 }

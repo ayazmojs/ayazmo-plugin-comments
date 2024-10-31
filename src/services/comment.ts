@@ -41,7 +41,7 @@ export default class CommentService extends BasePluginService {
     }
     const newComment = this.commentRepository.create(payload);
     await this.em.flush()
-    this.eventService.publish(CommentService.EVENTS.COMMENT_CREATE, newComment);
+    this.eventService.publish(CommentService.EVENTS.COMMENT_CREATE, newComment, this.pluginSettings);
     return newComment;
   }
 
@@ -73,7 +73,7 @@ export default class CommentService extends BasePluginService {
     }
     comment.content = payload.content;
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, comment);
+    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, comment, this.pluginSettings);
     return comment;
   }
 
@@ -104,7 +104,7 @@ export default class CommentService extends BasePluginService {
     }
 
     await this.em.remove(comment).flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment);
+    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment, this.pluginSettings);
   }
 
   /**
@@ -182,7 +182,7 @@ export default class CommentService extends BasePluginService {
     payload.comment = comment;
     const commentReport = this.commentReportRepository.create(payload);
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_REPORT_CREATE, commentReport);
+    this.eventService.publish(CommentService.EVENTS.COMMENT_REPORT_CREATE, commentReport, this.pluginSettings);
     return commentReport;
   }
 
@@ -251,7 +251,7 @@ export default class CommentService extends BasePluginService {
       }
     }
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, comment);
+    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, comment, this.pluginSettings);
     return comment;
   }
 
@@ -261,7 +261,7 @@ export default class CommentService extends BasePluginService {
       return true;
     }
     await this.em.remove(comment).flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment);
+    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment, this.pluginSettings);
     return true;
   }
 
@@ -272,7 +272,7 @@ export default class CommentService extends BasePluginService {
     }
     comment.status = 'deleted';
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment);
+    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment, this.pluginSettings);
     return true;
   }
 }

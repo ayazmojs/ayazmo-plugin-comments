@@ -23,6 +23,9 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
           },
           entityContextId: {
             type: 'string',
+          },
+          sectionId: {
+            type: 'string',
           }
         },
         required: ['content', 'entityContextId'],
