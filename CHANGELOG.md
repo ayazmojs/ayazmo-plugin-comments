@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.3.1
+
+### Patch Changes
+
+- cleanup
+
 ## 0.3.0
 
 ### Minor Changes
