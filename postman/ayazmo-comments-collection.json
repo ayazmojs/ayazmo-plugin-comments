@@ -1,0 +1,307 @@
+{
+  "info": {
+    "name": "Ayazmo Comments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "User Routes",
+      "item": [
+        {
+          "name": "Create Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"This is a comment\",\n  \"parentCommentId\": \"optional-parent-id\",\n  \"organizationId\": \"optional-org-id\",\n  \"entityContextId\": \"required-context-id\",\n  \"sectionId\": \"optional-section-id\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/comment",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "comment"]
+            }
+          }
+        },
+        {
+          "name": "Report Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Inappropriate content\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/comment/:commentId/report",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "comment", ":commentId", "report"],
+              "variable": [
+                {
+                  "key": "commentId",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Updated comment content\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/comment/:commentId",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "comment", ":commentId"],
+              "variable": [
+                {
+                  "key": "commentId",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Comments by Entity Context",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/comments?entityContextId=:entityContextId&first=10&sort=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "comments"],
+              "query": [
+                {
+                  "key": "entityContextId",
+                  "value": ":entityContextId"
+                },
+                {
+                  "key": "first",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Comments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/comments/my?first=10&sort=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "comments", "my"],
+              "query": [
+                {
+                  "key": "first",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Routes",
+      "item": [
+        {
+          "name": "Admin Get Comments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/v1/comments?entityContextId=:entityContextId&status=:status&first=10&sort=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "v1", "comments"],
+              "query": [
+                {
+                  "key": "entityContextId",
+                  "value": ":entityContextId"
+                },
+                {
+                  "key": "status",
+                  "value": ":status"
+                },
+                {
+                  "key": "first",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/v1/comments/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "v1", "comments", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin Update Comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAuthToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"new-status\",\n  \"content\": \"Updated comment content\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/v1/comments/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "v1", "comments", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin Hard Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/v1/comments/:id/permanent",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "v1", "comments", ":id", "permanent"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin Republish Comments",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAuthToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startDate\": \"2024-01-01T00:00:00Z\",\n  \"endDate\": \"2024-12-31T23:59:59Z\",\n  \"entityContextId\": \"optional-context-id\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/v1/comments/republish",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "v1", "comments", "republish"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+} 

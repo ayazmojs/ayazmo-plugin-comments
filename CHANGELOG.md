@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.4.0
+
+### Minor Changes
+
+- added routes
+
 ## 0.3.1
 
 ### Patch Changes

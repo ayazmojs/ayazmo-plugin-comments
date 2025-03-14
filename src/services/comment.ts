@@ -18,7 +18,8 @@ export default class CommentService extends BasePluginService {
     COMMENT_CREATE: 'comment.create',
     COMMENT_UPDATE: 'comment.update',
     COMMENT_DELETE: 'comment.delete',
-    COMMENT_REPORT_CREATE: 'comment.report.create',
+    COMMENT_REPORT_CREATE: 'comment-report.create',
+    COMMENT_REPUBLISH: 'comment.republish'
   }
 
   constructor(app: AyazmoInstance, pluginSettings: PluginSettings) {
@@ -41,7 +42,8 @@ export default class CommentService extends BasePluginService {
     }
     const newComment = this.commentRepository.create(payload);
     await this.em.flush()
-    this.eventService.publish(CommentService.EVENTS.COMMENT_CREATE, newComment, this.pluginSettings);
+    const { subComments, reports, ...commentToPublish } = newComment;
+    this.eventService.publish(CommentService.EVENTS.COMMENT_CREATE, commentToPublish, this.pluginSettings);
     return newComment;
   }
 
@@ -73,7 +75,8 @@ export default class CommentService extends BasePluginService {
     }
     comment.content = payload.content;
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, comment, this.pluginSettings);
+    const { subComments, reports, ...commentToPublish } = comment;
+    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, commentToPublish, this.pluginSettings);
     return comment;
   }
 
@@ -104,7 +107,8 @@ export default class CommentService extends BasePluginService {
     }
 
     await this.em.remove(comment).flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment, this.pluginSettings);
+    const { subComments, reports, ...commentToPublish } = comment;
+    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, commentToPublish, this.pluginSettings);
   }
 
   /**
@@ -147,11 +151,14 @@ export default class CommentService extends BasePluginService {
     cursor = '',
     sort
   }) {
+    // Handle null or invalid cursor values
+    const validCursor = cursor === 'null' || !cursor ? undefined : cursor;
+    
     const result = await this.em.findByCursor(Comment, {
       authorId: userId
     }, {
       first: parseInt(first),
-      after: cursor,
+      after: validCursor,
       orderBy: {
         createdAt: sort ?? 'desc'
       }
@@ -170,19 +177,24 @@ export default class CommentService extends BasePluginService {
    * @param payload
    */
   async reportComment(commentId: string, payload: CommentReport) {
-    const comment = await this.em.findOne(Comment, commentId);
-    if (!comment) {
+    const commentToReport = await this.em.findOne(Comment, commentId);
+    if (!commentToReport) {
       throw AyazmoError({
         statusCode: 404,
         message: 'Comment not found',
         code: 'COMMENT_NOT_FOUND'
       })
     }
-    comment.isReported = true;
-    payload.comment = comment;
+    commentToReport.isReported = true;
+    payload.comment = commentToReport;
     const commentReport = this.commentReportRepository.create(payload);
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_REPORT_CREATE, commentReport, this.pluginSettings);
+    const { comment, ...commentReportToPublish } = commentReport;
+    this.eventService.publish(
+      CommentService.EVENTS.COMMENT_REPORT_CREATE,
+      {...commentReportToPublish, commentId: commentToReport.id},
+      this.pluginSettings
+    );
     return commentReport;
   }
 
@@ -251,7 +263,8 @@ export default class CommentService extends BasePluginService {
       }
     }
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, comment, this.pluginSettings);
+    const { subComments, reports, ...commentToPublish } = comment;
+    this.eventService.publish(CommentService.EVENTS.COMMENT_UPDATE, commentToPublish, this.pluginSettings);
     return comment;
   }
 
@@ -261,7 +274,8 @@ export default class CommentService extends BasePluginService {
       return true;
     }
     await this.em.remove(comment).flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment, this.pluginSettings);
+    const { subComments, reports, ...commentToPublish } = comment;
+    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, commentToPublish, this.pluginSettings);
     return true;
   }
 
@@ -272,7 +286,45 @@ export default class CommentService extends BasePluginService {
     }
     comment.status = 'deleted';
     await this.em.flush();
-    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, comment, this.pluginSettings);
+    const { subComments, reports, ...commentToPublish } = comment;
+    this.eventService.publish(CommentService.EVENTS.COMMENT_DELETE, commentToPublish, this.pluginSettings);
     return true;
+  }
+
+  /**
+   * Re-publish comments based on time range and/or entityContextId
+   * @param filters Object containing startDate, endDate, and/or entityContextId
+   */
+  async adminRepublishComments(filters: {
+    startDate?: string,
+    endDate?: string,
+    entityContextId?: string
+  }) {
+    const query: any = {};
+    
+    // Build query based on provided filters
+    if (filters.startDate && filters.endDate) {
+      query.createdAt = {
+        $gte: new Date(filters.startDate),
+        $lte: new Date(filters.endDate)
+      };
+    }
+    
+    if (filters.entityContextId) {
+      query.entityContextId = filters.entityContextId;
+    }
+
+    // Find all matching comments
+    const comments = await this.commentRepository.find(query);
+    
+    // Publish each comment using 'comment.<status>' as the event name
+    for (const comment of comments) {
+      const { subComments, reports, ...commentToPublish } = comment;
+      this.eventService.publish(CommentService.EVENTS.COMMENT_REPUBLISH, commentToPublish, this.pluginSettings);
+    }
+
+    return {
+      count: comments.length
+    };
   }
 }

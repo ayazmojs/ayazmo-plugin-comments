@@ -17,15 +17,19 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
           },
           parentCommentId: {
             type: 'string',
+            maxLength: 255
           },
           organizationId: {
             type: 'string',
+            maxLength: 255
           },
           entityContextId: {
             type: 'string',
+            maxLength: 255
           },
           sectionId: {
             type: 'string',
+            maxLength: 255
           }
         },
         required: ['content', 'entityContextId'],
@@ -100,6 +104,7 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
         properties: {
           entityContextId: {
             type: 'string',
+            maxLength: 255
           },
           first: {
             type: 'number',
@@ -107,7 +112,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
           },
           cursor: {
             type: 'string',
-            default: null,
+            default: '',
+            maxLength: 200
           },
           sort: {
             type: 'string',
@@ -119,7 +125,6 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
         additionalProperties: false
       }
     },
-    // @ts-ignore
     preHandler: app.userAuthChain,
     handler: async (request, reply) => {
       const commentService = request.diScope.resolve('commentService');
@@ -140,7 +145,8 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
           },
           cursor: {
             type: 'string',
-            default: null,
+            default: '',
+            maxLength: 200
           },
           sort: {
             type: 'string',

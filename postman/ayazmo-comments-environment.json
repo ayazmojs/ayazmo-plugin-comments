@@ -1,0 +1,36 @@
+{
+  "id": "ayazmo-comments-env",
+  "name": "Ayazmo Comments Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "enabled": true
+    },
+    {
+      "key": "authToken",
+      "value": "your-user-jwt-token",
+      "type": "string",
+      "enabled": true
+    },
+    {
+      "key": "adminAuthToken",
+      "value": "your-admin-jwt-token",
+      "type": "string",
+      "enabled": true
+    },
+    {
+      "key": "entityContextId",
+      "value": "your-entity-context-id",
+      "type": "string",
+      "enabled": true
+    },
+    {
+      "key": "commentId",
+      "value": "your-comment-id",
+      "type": "string",
+      "enabled": true
+    }
+  ]
+} 
