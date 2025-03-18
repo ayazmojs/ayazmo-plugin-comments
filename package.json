@@ -1,6 +1,6 @@
 {
   "name": "ayazmo-plugin-comments",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "ayazmo plugin comments",
   "exports": "./dist/index.js",
   "author": "ayazmo.io",
@@ -13,9 +13,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "ayazmo": "^0.6.4"
-  },
+  "dependencies": {},
   "scripts": {
     "build": "rimraf dist && tsc --build",
     "build-watch": "tsc --watch",
@@ -23,17 +21,16 @@
     "publish": "changeset publish"
   },
   "devDependencies": {
-    "@ayazmo/core": "^0.6.4",
-    "@ayazmo/types": "^0.6.4",
-    "@ayazmo/utils": "^0.6.4",
+    "@ayazmo/core": "^0.6.5",
+    "@ayazmo/types": "^0.6.5",
+    "@ayazmo/utils": "^0.6.5",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.9",
+    "ayazmo": "^0.6.5",
     "rimraf": "^5.0.5",
     "typescript": "^5.4.2"
   },
-  "peerDependencies": {
-    "ayazmo": "^0.6.0"
-  },
+  "peerDependencies": {},
   "engines": {
     "node": ">=20.0.0"
   }

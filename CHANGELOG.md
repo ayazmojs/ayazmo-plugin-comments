@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.4.1
+
+### Patch Changes
+
+- bump deps
+
 ## 0.4.0
 
 ### Minor Changes
