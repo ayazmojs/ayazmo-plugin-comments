@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.4.2
+
+### Patch Changes
+
+- Export services and entities
+
 ## 0.4.1
 
 ### Patch Changes
