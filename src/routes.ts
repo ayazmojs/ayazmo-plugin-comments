@@ -104,7 +104,37 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
         properties: {
           entityContextId: {
             type: 'string',
+            minLength: 1,
             maxLength: 255
+          },
+          authorId: {
+            type: 'string',
+            minLength: 1,
+            maxLength: 255
+          },
+          sectionId: {
+            type: 'string',
+            minLength: 1,
+            maxLength: 255
+          },
+          view: {
+            type: 'string',
+            enum: ['tree', 'flat'],
+            default: 'tree'
+          },
+          createdFrom: {
+            type: 'string',
+            oneOf: [
+              { format: 'date' },
+              { format: 'date-time' }
+            ]
+          },
+          createdTo: {
+            type: 'string',
+            oneOf: [
+              { format: 'date' },
+              { format: 'date-time' }
+            ]
           },
           first: {
             type: 'number',
@@ -121,14 +151,13 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
             default: 'desc',
           },
         },
-        required: ['entityContextId'],
         additionalProperties: false
       }
     },
     preHandler: app.userAuthChain,
     handler: async (request, reply) => {
       const commentService = request.diScope.resolve('commentService');
-      const comments = await commentService.findAllCommentsByEntityContextId(request.query);
+      const comments = await commentService.findAllComments(request.query);
       return reply.code(200).send(comments);
     }
   },
