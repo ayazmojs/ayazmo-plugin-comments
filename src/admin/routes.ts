@@ -12,6 +12,10 @@ const routes = (app: AyazmoInstance): AyazmoRouteOptions[] => [
             type: 'string',
             minLength: 1
           },
+          sectionId: {
+            type: 'string',
+            minLength: 1
+          },
           status: {
             type: 'string',
             minLength: 1

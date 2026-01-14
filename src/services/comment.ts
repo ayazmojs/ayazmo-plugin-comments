@@ -207,6 +207,7 @@ export default class CommentService extends BasePluginService {
    */
   async adminFindAllComments({
     entityContextId,
+    sectionId,
     status,
     first,
     cursor = '',
@@ -218,6 +219,10 @@ export default class CommentService extends BasePluginService {
     if (entityContextId) {
       // @ts-ignore
       query.entityContextId = entityContextId
+    }
+    if (sectionId) {
+      // @ts-ignore
+      query.sectionId = sectionId
     }
     if (status) {
       // @ts-ignore
