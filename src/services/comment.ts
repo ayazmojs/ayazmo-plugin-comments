@@ -6,7 +6,7 @@
 import { BasePluginService } from '@ayazmo/core';
 import Comment from '../entities/Comment.js';
 import CommentReport from '../entities/CommentReport.js';
-import { EntityRepository, IEventEmitter, PluginSettings, AyazmoInstance } from '@ayazmo/types';
+import { EntityRepository, IEventEmitter, PluginSettings, AyazmoInstance, FilterQuery, FindOptions } from '@ayazmo/types';
 import { AyazmoError } from '@ayazmo/utils'
 
 export default class CommentService extends BasePluginService {
@@ -112,31 +112,66 @@ export default class CommentService extends BasePluginService {
   }
 
   /**
-   * Get comments + subcomments for a specific entityContextId with pagination
+   * Get comments + subcomments with pagination
    * @param entityContextId
+   * @param authorId
+   * @param sectionId
+   * @param view
+   * @param createdFrom
+   * @param createdTo
    * @param first
    * @param cursor
    */
-  async findAllCommentsByEntityContextId(args: {
+  async findAllComments(args: {
     entityContextId: string,
+    authorId: string,
+    sectionId: string,
+    view: 'tree' | 'flat',
+    createdFrom: string,
+    createdTo: string,
     first: string,
     cursor: string,
     sort: string
   }) {
-    const { entityContextId, first, cursor, sort } = args
+    const { entityContextId, authorId, sectionId, view, createdFrom, createdTo, first, cursor, sort } = args
 
-    const result = await this.em.findByCursor(Comment, {
-      entityContextId: entityContextId.toString(),
-      status: { $in: this.pluginSettings.displayStatus ?? ['approved', 'pending'] },
-      parentComment: null
-    }, {
+    const query: FilterQuery<Comment> = {
+      status: { $in: this.pluginSettings.displayStatus ?? ['approved', 'pending'] }
+    }
+
+    const option: FindOptions<Comment, 'subComments'> = {
       first: parseInt(first),
       after: cursor,
       orderBy: {
         createdAt: sort ?? 'desc'
-      },
-      populate: ['subComments']
-    });
+      }
+    }
+
+    if (view === 'tree') {
+      query.parentComment = null
+      option.populate = ['subComments']
+    }
+
+    if (entityContextId) {
+      query.entityContextId = entityContextId.toString()
+    }
+
+    if (authorId) {
+      query.authorId = authorId
+    }
+
+    if (sectionId) {
+      query.sectionId = sectionId
+    }
+
+    if (createdFrom || createdTo) {
+      query.createdAt = {
+        ...createdFrom && { $gte: createdFrom },
+        ...createdTo && { $lte: createdTo }
+      }
+    }
+
+    const result = await this.em.findByCursor(Comment, query, option);
 
     return {
       // @ts-ignore
@@ -207,6 +242,7 @@ export default class CommentService extends BasePluginService {
    */
   async adminFindAllComments({
     entityContextId,
+    sectionId,
     status,
     first,
     cursor = '',
@@ -218,6 +254,10 @@ export default class CommentService extends BasePluginService {
     if (entityContextId) {
       // @ts-ignore
       query.entityContextId = entityContextId
+    }
+    if (sectionId) {
+      // @ts-ignore
+      query.sectionId = sectionId
     }
     if (status) {
       // @ts-ignore
