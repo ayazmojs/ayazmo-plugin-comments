@@ -1,5 +1,11 @@
 # ayazmo-plugin-comments
 
+## 0.5.0
+
+### Minor Changes
+
+- Add query params to GET comments
+
 ## 0.4.2
 
 ### Patch Changes

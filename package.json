@@ -1,6 +1,6 @@
 {
   "name": "ayazmo-plugin-comments",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "ayazmo plugin comments",
   "exports": {
     "./services/*": "./dist/services/*.js",
